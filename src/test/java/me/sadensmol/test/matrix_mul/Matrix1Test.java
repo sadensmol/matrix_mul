@@ -1,11 +1,12 @@
-package me.sadensmol.test;
+package me.sadensmol.test.matrix_mul;
 
+import me.sadensmol.test.matrix_mul.model.Matrix1;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AppTest{
+public class Matrix1Test {
 
     private long startTime;
 
@@ -61,9 +62,9 @@ public class AppTest{
 
 
         Assert.assertTrue(matrix1.getElement(0,0) == 1);
-        Assert.assertTrue(matrix1.getElement(0,1) == 2);
-        Assert.assertTrue(matrix1.getElement(0,2) == 3);
-        Assert.assertTrue(matrix1.getElement(0,3) == 4);
+        Assert.assertTrue(matrix1.getElement(0,1) == 5);
+        Assert.assertTrue(matrix1.getElement(3,2) == 12);
+        Assert.assertTrue(matrix1.getElement(1,3) == 14);
     }
 
     @Test
@@ -94,6 +95,15 @@ public class AppTest{
                 24,25,26,27,
                 28,29,30,31,
                 32,33,34,35);
+
+
+        Matrix1 result = new Matrix1(
+                1*20+2*24+3*28+4*32, 1*21+2*25+3*29+4*33,1*22+2*26+3*30+4*34,1*23+2*27+3*31+4*35,
+                5*20+6*24+7*28+8*32, 5*21+6*25+7*29+8*33,5*22+6*26+7*30+8*34,5*23+6*27+7*31+8*35,
+                9*20+10*24+11*28+12*32, 9*21+10*25+11*29+12*33,9*22+10*26+11*30+12*34,9*23+10*27+11*31+12*35,
+                13*20+14*24+15*28+16*32, 13*21+14*25+15*29+16*33,13*22+14*26+15*30+16*34,13*23+14*27+15*31+16*35);
+
+        Assert.assertTrue(matrix1.mul(matrix2).equals(result));
 
 
 
