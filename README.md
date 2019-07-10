@@ -27,6 +27,7 @@ Matrix2
 
 Plan:
 + add simple test multiplier (to understand the area and raise an exp)
-- add multithreaded multiplier (the main test requirement)
++ add multithreaded multiplier (the main test requirement)
 - add tests for big matrix calculations and provide a result data on speed for both ways
 - refactor Matrix1, Matrix2 classes with BaseClass to remove code duplication
+- refactor multithreaded code with better performance (based on test results)

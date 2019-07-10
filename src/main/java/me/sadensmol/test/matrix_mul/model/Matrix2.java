@@ -2,7 +2,9 @@ package me.sadensmol.test.matrix_mul.model;
 
 import me.sadensmol.test.matrix_mul.utils.ProgressiveMatrixCalculator;
 
+import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
  */
 
 public class Matrix2 implements IMatrix{
-    private Vector<Vector<Double>> elements = new Vector<Vector<Double>>();;
+    private List<List<Double>> elements = new CopyOnWriteArrayList<>();
 
     /**
      * Creates empty matrix
