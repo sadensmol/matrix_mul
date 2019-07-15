@@ -14,11 +14,13 @@ import java.util.concurrent.*;
  */
 public class ProgressiveMatrixCalculator {
 
+    private static final int NUM_THREADS = 12;
+
     private final IMatrix leftMatrix;
     private final IMatrix rightMatrix;
 
     private Deque<Future> futuresQueue = new ConcurrentLinkedDeque<>();
-    private ExecutorService executor = Executors.newFixedThreadPool(12);
+    private ExecutorService executor = Executors.newFixedThreadPool(NUM_THREADS);
 
     public ProgressiveMatrixCalculator (IMatrix leftMatrix, IMatrix rightMatrix) {
         this.leftMatrix = leftMatrix;
@@ -29,28 +31,19 @@ public class ProgressiveMatrixCalculator {
         // todo - check for sizes
         int size = leftMatrix.getSize();
         final IMatrix result = new Matrix2(size);
-        long l = System.currentTimeMillis();
 
-        for (int i = 0; i < size; ++i) { //left matrix row
-            for (int j = 0; j < size; ++j) { // right matrix column
+        int stepSize = size / NUM_THREADS;
+        if (stepSize == 0) stepSize = 1;
 
-                int finalI = i;
-                int finalJ = j;
-                futuresQueue.add(executor.submit(() ->{
-                    double value = 0;
+        for (int i = 0; i<= NUM_THREADS; i++) {
+            int startIndex = i *  stepSize;
+            if (startIndex >= size) break;
 
-                    for (int k = 0; k < size; ++k) { //column
-                        value += leftMatrix.getElement(k, finalI) * rightMatrix.getElement(finalJ, k);
-                    }
-                    result.setElement(finalJ, finalI, value);
-                }));
+            int endIndex = startIndex + stepSize;
+            if (endIndex >= size ) endIndex = size;
 
-            }
+            futuresQueue.add(executor.submit(new CalculateWorker(result, startIndex, endIndex)));
         }
-
-        long l2 = System.currentTimeMillis();
-        System.out.println(l2-l);
-
 
         while (!futuresQueue.isEmpty()) {
             for (Future future : futuresQueue) {
@@ -59,7 +52,34 @@ public class ProgressiveMatrixCalculator {
         }
 
         return result;
-
     }
 
+    class CalculateWorker implements Callable<Void>{
+        IMatrix matrix;
+        int startIndex;
+        int endIndex;
+
+        public CalculateWorker (IMatrix matrix, int startIndex, int endIndex) {
+            this.matrix = matrix;
+            this.startIndex = startIndex;
+            this.endIndex = endIndex;
+        }
+
+        @Override
+        public Void call() throws Exception {
+
+            for (int i = startIndex; i < endIndex; ++i) { //left matrix row
+                for (int j = 0; j < matrix.getSize(); ++j) { // right matrix column
+
+                    double value = 0;
+                    for (int k = 0; k < matrix.getSize(); ++k) { //number
+                        value += leftMatrix.getElement(k, i) * rightMatrix.getElement(j, k);
+                    }
+                    matrix.setElement(j, i, value);
+                }
+            }
+
+            return null;
+        }
+    }
 }

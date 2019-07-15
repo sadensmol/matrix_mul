@@ -49,8 +49,8 @@ public class Matrix1 implements IMatrix{
     public IMatrix mul(IMatrix other) throws IllegalArgumentException{
         IMatrix result = new Matrix1(getSize());
 
-        for (int i = 0; i < elements.size(); ++i) { //left matrix row
-            for (int j = 0; j < elements.size(); ++j) { // right matrix column
+        for (int i = 0; i < elements.size(); i++) { //left matrix row
+            for (int j = 0; j < elements.size(); j++) { // right matrix column
                 double value = 0;
 
                 for (int k = 0; k < elements.size(); ++k) { //column

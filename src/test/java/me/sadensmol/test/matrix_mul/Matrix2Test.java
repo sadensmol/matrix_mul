@@ -108,23 +108,9 @@ public class Matrix2Test {
                 9*20+10*24+11*28+12*32, 9*21+10*25+11*29+12*33,9*22+10*26+11*30+12*34,9*23+10*27+11*31+12*35,
                 13*20+14*24+15*28+16*32, 13*21+14*25+15*29+16*33,13*22+14*26+15*30+16*34,13*23+14*27+15*31+16*35);
 
+        IMatrix mul = matrix1.mul(matrix2);
+
         Assert.assertTrue(matrix1.mul(matrix2).equals(result));
     }
 
-    @Test
-    public void matrix2HugeMatrixTest() throws ExecutionException, InterruptedException {
-
-        int SIZE = 200;
-
-        IMatrix matrix1 = new Matrix2(SIZE);
-        IMatrix matrix2 = new Matrix2(SIZE);
-
-        for (int i = 0; i < SIZE; i++)
-            for (int j = 0; j < SIZE; j++) {
-                matrix1.setElement(j, i, new Random(100).nextDouble());
-                matrix2.setElement(j, i, new Random(100).nextDouble());
-            }
-
-        matrix1.mul(matrix2);
-    }
 }
